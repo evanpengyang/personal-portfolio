@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title">
+  <title id="title">Campus Eats</title>
+  <rect width="1200" height="800" fill="#ffffff"/>
+  <g transform="translate(278 310)">
+    <rect width="164" height="164" rx="42" fill="#ff5a0a"/>
+    <g fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M37 42l85 85"/>
+      <path d="M54 29l82 82"/>
+      <path d="M48 28v35M31 45h35"/>
+      <path d="M104 33l24 24M91 46l25 25"/>
+    </g>
+  </g>
+  <text x="485" y="414" fill="#152035" font-family="Arial, Helvetica, sans-serif" font-size="94" font-weight="700" letter-spacing="-4">Campus Eats</text>
+</svg>
