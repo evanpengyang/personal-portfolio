@@ -6,7 +6,6 @@ export const profile = {
 
 export const projects = [
   {
-    number: "01",
     slug: "etika",
     title: "Etika",
     description: "A citation-first legal compliance agent for British Columbia businesses.",
@@ -19,7 +18,6 @@ export const projects = [
     accent: "blue",
   },
   {
-    number: "02",
     slug: "campus-eats",
     title: "Campus Eats",
     description: "A UBC events platform for finding community gatherings with food.",
@@ -31,7 +29,6 @@ export const projects = [
     accent: "orange",
   },
   {
-    number: "03",
     slug: "psyflow",
     title: "Psyflow",
     description: "Real-time physiotherapy feedback with computer vision and pose estimation.",
@@ -39,11 +36,10 @@ export const projects = [
     link: "https://devpost.com/software/psyflow",
     linkLabel: "View on Devpost",
     detail: "Psyflow is a real-time physiotherapy feedback tool built with OpenCV, MediaPipe, and Flask. It reads live video, estimates a person’s pose, and evaluates joint angles against the target movement. The system turns those measurements into similarity scores and immediate feedback so an exercise can be adjusted while it is happening.",
-    type: "field-notes",
+    type: "psyflow",
     accent: "yellow",
   },
   {
-    number: "04",
     slug: "image-to-character",
     title: "Image to Character",
     description: "A pipeline that turns a photo into a rigged, animated game character.",
@@ -51,11 +47,10 @@ export const projects = [
     link: "https://devpost.com/software/chud-life",
     linkLabel: "View on Devpost",
     detail: "Image to Character is an end-to-end pipeline for turning human photos into fully rigged and animated game characters. I connected React Three Fiber and Rapier for the interactive 3D layer with Hunyuan3D and Meshy.ai for modeling and rigging, creating a path from an ordinary image to a character ready for play.",
-    type: "quiet-hours",
+    type: "chud-life",
     accent: "blue",
   },
   {
-    number: "05",
     slug: "internship-tracker",
     title: "Internship Analytics Tracker",
     description: "A desktop tracker for job applications, next steps, and recruiting stats.",
@@ -63,7 +58,7 @@ export const projects = [
     link: "https://github.com/evanpengyang/Java-Internship-Analytics-Tracker",
     linkLabel: "View on GitHub",
     detail: "Internship Analytics Tracker is a Java desktop application for managing internship applications, their next steps, and recruiting statistics. I designed the app around object-oriented principles, added persistent application data, and built its interface in Swing. The core logic was developed test first with JUnit and reached full code coverage.",
-    type: "commonplace",
+    type: "internship-tracker",
     accent: "orange",
   },
 ];
@@ -141,12 +136,47 @@ export const heroPhotos = [
 
 export const photoSections = [
   {
-    section: "A proud moment",
+    section: "With friends",
     photos: [
       {
-        id: "award",
-        src: "/photos/3B3AB25C-BB8F-436A-8119-AF033DD30A11_1_105_c.jpeg",
-        alt: "Evan and a teammate holding a winner certificate",
+        id: "award-team",
+        src: "/photos/3501846C-3803-4890-9C37-C26A14882D4C.jpeg",
+        alt: "Evan and teammates at an award ceremony",
+      },
+      {
+        id: "restaurant-friends",
+        src: "/photos/3578D5B1-F3EB-4168-914F-0C0A5D9F1367.jpeg",
+        alt: "Evan with friends at a restaurant",
+      },
+      {
+        id: "pizza-night",
+        src: "/photos/4EB0AF6B-1C1D-4748-8B27-D142EB31DC30_1_102_o.jpeg",
+        alt: "Evan and friends sharing pizza",
+        layout: "journal-photo--portrait",
+      },
+      {
+        id: "cabin-friends",
+        src: "/photos/group-friends-cabin.jpg",
+        alt: "Evan and friends sitting outside a cabin",
+        layout: "journal-photo--portrait",
+      },
+      {
+        id: "large-group",
+        src: "/photos/A66A901F-492D-4C89-A117-61F606BCAF6B.JPG",
+        alt: "A large group of friends posing outside",
+        layout: "journal-photo--group-shot",
+      },
+      {
+        id: "team-event",
+        src: "/photos/image.png",
+        alt: "A group at an event wearing matching sweatshirts",
+        layout: "journal-photo--featured",
+      },
+      {
+        id: "night-out",
+        src: "/photos/image%20copy.png",
+        alt: "Evan and friends on a night out",
+        layout: "journal-photo--night-out",
       },
     ],
   },

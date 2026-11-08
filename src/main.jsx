@@ -87,7 +87,31 @@ function ProjectArtwork({ type }) {
   if (type === "campus-eats") {
     return (
       <div className="art art-campus-eats" aria-hidden="true">
-        <img src="/campus-eats-cover.svg" alt="" />
+        <img src="/photos/campus-eats-logo.jpg" alt="" />
+      </div>
+    );
+  }
+
+  if (type === "chud-life") {
+    return (
+      <div className="art art-chud-life" aria-hidden="true">
+        <img src="/photos/chud-life.png" alt="" />
+      </div>
+    );
+  }
+
+  if (type === "internship-tracker") {
+    return (
+      <div className="art art-internship-tracker" aria-hidden="true">
+        <img src="/photos/internship-tracker.png" alt="" />
+      </div>
+    );
+  }
+
+  if (type === "psyflow") {
+    return (
+      <div className="art art-psyflow" aria-hidden="true">
+        <img src="/photos/Screenshot%202026-11-08%20at%2012.19.24%E2%80%AFAM.png" alt="" />
       </div>
     );
   }
@@ -140,7 +164,7 @@ function ProjectPage({ project, onBack }) {
       <article className="project-case section-shell">
         <div className="project-case-intro">
           <div>
-            <p className="section-index">Project {project.number} / Selected work</p>
+            <p className="section-index">Selected work</p>
             <h1>{project.title}</h1>
             {project.award && <p className="project-award">{project.award}</p>}
             <p className="project-case-summary">{project.description}</p>
@@ -155,6 +179,32 @@ function ProjectPage({ project, onBack }) {
         </div>
       </article>
     </main>
+  );
+}
+
+function NextSectionButton({ target }) {
+  const [visibleTarget, setVisibleTarget] = useState(target);
+  const [isChanging, setIsChanging] = useState(false);
+
+  useEffect(() => {
+    if (target.id === visibleTarget.id) return undefined;
+
+    setIsChanging(true);
+    const transitionTimer = window.setTimeout(() => {
+      setVisibleTarget(target);
+      setIsChanging(false);
+    }, 140);
+
+    return () => window.clearTimeout(transitionTimer);
+  }, [target, visibleTarget.id]);
+
+  const buttonWidth = `${Math.min(157, Math.max(126, visibleTarget.label.length * 7 + 80))}px`;
+
+  return (
+    <a href={`#${target.id}`} className="next-section-button" aria-label={`Go to ${target.label}`} style={{ "--next-button-width": buttonWidth }}>
+      <NextSectionArrow direction={visibleTarget.direction} />
+      <span className={`next-section-label ${isChanging ? "is-changing" : ""}`}>To {visibleTarget.label}</span>
+    </a>
   );
 }
 
@@ -181,9 +231,7 @@ function App() {
       if (section) observer.observe(section);
     });
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -225,7 +273,6 @@ function App() {
   };
 
   const activeProject = projects.find((project) => project.slug === activeProjectSlug);
-  const nextButtonWidth = `${Math.min(168, Math.max(126, nextTarget.label.length * 7 + 80))}px`;
 
   if (activeProject) return <ProjectPage project={activeProject} onBack={closeProject} />;
 
@@ -245,20 +292,18 @@ function App() {
           <a href="#contact" onClick={closeMenu}>Contact <Arrow /></a>
         </nav>
       </header>
-      <a href={`#${nextTarget.id}`} className="next-section-button" aria-label={`Skip to ${nextTarget.label}`} style={{ "--expanded-button-width": nextButtonWidth }}>
-        <NextSectionArrow direction={nextTarget.direction} /><span className="next-section-label">To {nextTarget.label}</span>
-      </a>
+      <NextSectionButton target={nextTarget} />
 
       <section id="top" className="hero section-shell">
         <div className="hero-intro">
           <div className="hero-lead">
-            <h1 className="home-title" aria-label="Hi, I'm Evan."><span className="hero-reveal hero-reveal-title-one">Hi, I&apos;m <em>Evan.</em></span></h1>
-            <p className="hero-copy hero-reveal hero-reveal-copy">I&apos;m a Business and Computer Science student at UBC who likes building thoughtful digital things, then stepping away to collect the moments in between.</p>
+            <h1 className="home-title" aria-label="Hi, I'm Evan!"><span className="hero-reveal hero-reveal-title-one">Hi, I&apos;m Evan!</span></h1>
+            <p className="hero-copy hero-reveal hero-reveal-copy">I love learning how things work, understanding what people need, and solving real problems.</p>
             <p className="hero-credential hero-reveal hero-reveal-meta"><UbcCrest /><span className="credential-text">UBC Business and Computer Science <b aria-hidden="true">|</b> Presidential Scholar</span></p>
             <div className="quick-links hero-reveal hero-reveal-links" aria-label="My quick links">
               <a className="linkedin-link" href="https://www.linkedin.com/in/evan-py-peng" target="_blank" rel="noreferrer"><LinkedInIcon /> LinkedIn</a>
               <a className="github-link" href="https://github.com/evanpengyang" target="_blank" rel="noreferrer"><GitHubIcon /> GitHub</a>
-              <a className="instagram-link" href="https://instagram.com" target="_blank" rel="noreferrer"><InstagramIcon /> Instagram</a>
+              <a className="instagram-link" href="https://www.instagram.com/evan_fifi/" target="_blank" rel="noreferrer"><InstagramIcon /> Instagram</a>
             </div>
           </div>
           <div className="hero-photo-stack-reveal hero-reveal hero-reveal-image"><HeroPhotoStack photos={heroPhotos} /></div>
@@ -272,7 +317,7 @@ function App() {
               <button type="button" className="project-link" onClick={() => openProject(project.slug)} aria-label={`Open ${project.title} project details`}>
                 <ProjectArtwork type={project.type} />
                 <div className="project-info">
-                  <div className="project-topline"><span>{project.number}</span><span className="project-arrow"><Arrow /></span></div>
+                  <div className="project-topline"><span className="project-arrow"><Arrow /></span></div>
                   {project.award && <span className="project-award">{project.award}</span>}
                   <h2>{project.title}</h2>
                   <p>{project.description}</p>
@@ -282,13 +327,11 @@ function App() {
             </article>
           ))}
         </div>
-        <a href="#contact" className="archive-link">More work, soon <Arrow /></a>
       </section>
 
       <section id="experience" className="experience section-shell scroll-reveal" data-reveal>
         <div className="section-heading">
           <p className="section-index">Experience</p>
-          <p className="section-note">A short timeline,<br />so far.</p>
         </div>
         <div className="experience-list">
           {experience.map((item) => (
@@ -303,17 +346,15 @@ function App() {
 
       <section id="about" className="about section-shell scroll-reveal" data-reveal>
         <div className="about-card">
-          <div className="about-intro">
+          <div className="about-intro about-intro-single">
             <div className="about-column">
-              <h3>What I&apos;m making</h3>
-              <p>Small products, useful systems, and ideas I&apos;m curious enough to follow through.</p>
-              <p>I&apos;m especially drawn to projects that make everyday life feel a little clearer.</p>
+              <h3>Outside of Work</h3>
+              <p>I love travelling, exploring different cultures, food, and experiences, anything which will give me future dad lore. In my free time you can catch me bouldering, swimming, working out and enjoying time with friends :)</p>
             </div>
-            <div className="about-column">
-              <h3>Outside of work</h3>
-              <p>I love travelling, taking the long way home, and meeting every cat that will let me say hello.</p>
-              <p>Photos, good food, and hobbies are how I stay curious when I&apos;m away from a screen.</p>
-            </div>
+          </div>
+          <div className="about-philosophy about-column">
+            <h3>My Philosophy</h3>
+            <p>I&apos;ve always loved teaching, and in the far future aspire to be a professor. From teaching cadets leadership skills, to teaching young kids how to swim, to leading a chess program for elementary kids across BC, I&apos;ve always enjoyed giving back to my communities. That&apos;s why a fundamental part of my life is about learning and growth!</p>
           </div>
           <div className="photo-journal">
             <div className="journal-heading"><h3>A few moments</h3><p>Photos from the places, people, and little things I want to remember.</p></div>
@@ -321,7 +362,7 @@ function App() {
               <div className="photo-section" key={section.section}>
                 <h4 className="photo-section-title">{section.section}</h4>
                 <div className="photo-grid">
-                  {section.photos.map((photo) => <figure className="journal-photo" key={photo.id ?? photo.src}><img src={photo.src} alt={photo.alt} /></figure>)}
+                  {section.photos.map((photo) => <figure className={`journal-photo ${photo.layout ?? ""}`} key={photo.id ?? photo.src}><img src={photo.src} alt={photo.alt} /></figure>)}
                 </div>
               </div>
             )) : (
