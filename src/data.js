@@ -10,7 +10,7 @@ export const projects = [
     title: "Etika",
     description: "A citation-first legal compliance agent for British Columbia businesses.",
     tags: ["Python", "FastAPI", "Gemini", "Next.js"],
-    award: "StormHacks 2026 finalist · Top 3 of 842",
+    award: "StormHacks 2026 Finalist · Top 3 Project · 842 Participants",
     link: "https://devpost.com/software/etika?ref_content=my-projects-tab&ref_feature=my_projects",
     linkLabel: "View on Devpost",
     detail: "Etika is a RAG-powered legal compliance agent built for British Columbia businesses. It placed in the top three out of 842 StormHacks participants after I built a retrieval system around 19 government pages, splitting them by legal section and embedding 240 chunks in TiDB with batched Gemini embeddings. Results use cosine-ranked retrieval with lexical fallback, and a post-retrieval citation check prevents the agent from attaching advice to a source chunk it did not actually retrieve.",

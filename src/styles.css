@@ -263,8 +263,7 @@ h1 {
   width: 100%;
   color: var(--muted);
   font: 500 10px var(--mono);
-  letter-spacing: .04em;
-  text-transform: uppercase;
+  letter-spacing: .02em;
 }
 
 .quick-links a {
@@ -700,12 +699,12 @@ h1 {
 .project-award {
   display: inline-block;
   margin-top: 15px;
-  padding: 6px 7px 5px;
-  color: #315d2f;
-  background: #e5f1df;
-  font: 500 9px var(--mono);
+  padding: 7px 10px 6px;
+  color: #7a5c1a;
+  background: #faf0d0;
+  font: 600 11px var(--mono);
   letter-spacing: .02em;
-  text-transform: uppercase;
+  border-radius: 4px;
 }
 
 .project h2 {
@@ -795,7 +794,7 @@ h1 {
 
 .project-case .project-award {
   margin-top: 27px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .project-case-summary {
