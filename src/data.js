@@ -135,11 +135,6 @@ export const heroPhotos = [
     src: "/photos/760347FD-85BE-4261-BB2F-9E264918E643_1_105_c.jpeg",
     alt: "Evan relaxing with two cats",
   },
-  {
-    id: "cheese",
-    src: "/photos/F3B51F78-075D-4F08-BECC-14DD5B7267AD_1_105_c.jpeg",
-    alt: "Evan enjoying a cheese pull at a restaurant",
-  },
 ];
 
 // Add a short caption between the quotation marks on any photo below.
