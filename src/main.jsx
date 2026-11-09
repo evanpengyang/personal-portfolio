@@ -10,7 +10,7 @@ const sectionTargets = [
   { id: "experience", label: "Experiences", direction: "down" },
   { id: "about", label: "About", direction: "down" },
   { id: "contact", label: "Contact", direction: "down" },
-  { id: "top", label: "Top", direction: "up" },
+  { id: "top", label: "Start", buttonLabel: "Back to Start", direction: "up" },
 ];
 
 function NextSectionArrow({ direction }) {
@@ -176,7 +176,7 @@ function NextSectionButton({ target }) {
   const [isChanging, setIsChanging] = useState(false);
 
   useEffect(() => {
-    if (target.id === visibleTarget.id) return undefined;
+    if (target === visibleTarget) return undefined;
 
     setIsChanging(true);
     const transitionTimer = window.setTimeout(() => {
@@ -185,14 +185,16 @@ function NextSectionButton({ target }) {
     }, 140);
 
     return () => window.clearTimeout(transitionTimer);
-  }, [target, visibleTarget.id]);
+  }, [target, visibleTarget]);
 
-  const buttonWidth = `${Math.min(157, Math.max(126, visibleTarget.label.length * 7 + 80))}px`;
+  const visibleLabel = visibleTarget.buttonLabel ?? `To ${visibleTarget.label}`;
+  const targetLabel = target.buttonLabel ?? `To ${target.label}`;
+  const buttonWidth = `${Math.min(172, Math.max(126, visibleLabel.length * 7 + 80))}px`;
 
   return (
-    <a href={`#${target.id}`} className="next-section-button" aria-label={`Go to ${target.label}`} style={{ "--next-button-width": buttonWidth }}>
+    <a href={`#${target.id}`} className="next-section-button" aria-label={targetLabel} style={{ "--next-button-width": buttonWidth }}>
       <NextSectionArrow direction={visibleTarget.direction} />
-      <span className={`next-section-label ${isChanging ? "is-changing" : ""}`}>To {visibleTarget.label}</span>
+      <span className={`next-section-label ${isChanging ? "is-changing" : ""}`}>{visibleLabel}</span>
     </a>
   );
 }
@@ -210,24 +212,38 @@ function App() {
   useEffect(() => {
     if (activeProjectSlug) return undefined;
 
-    const activeSections = new Set();
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) activeSections.add(entry.target.id);
-        else activeSections.delete(entry.target.id);
-      });
+    const updateNextTarget = () => {
+      const forwardTargets = sectionTargets.slice(0, -1);
+      const startTarget = sectionTargets[sectionTargets.length - 1];
+      const scrollRemaining = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+      const nextTarget = scrollRemaining <= 8
+        ? startTarget
+        : forwardTargets.find((target) => {
+          const section = document.getElementById(target.id);
+          return section && section.getBoundingClientRect().top > window.innerHeight * 0.35;
+        }) ?? startTarget;
 
-      const activeIndex = sectionTargets.slice(0, -1).findIndex((target) => activeSections.has(target.id));
-      const target = activeIndex === -1 ? sectionTargets[0] : sectionTargets[activeIndex + 1];
-      setNextTarget((current) => (current === target ? current : target));
-    }, { rootMargin: "-35% 0px -50% 0px", threshold: 0 });
+      setNextTarget((current) => (current === nextTarget ? current : nextTarget));
+    };
 
-    sectionTargets.slice(0, -1).forEach((target) => {
-      const section = document.getElementById(target.id);
-      if (section) observer.observe(section);
-    });
+    // Calculate the destination from the actual layout on every scroll. This
+    // also makes the final Contact -> Start handoff reliable when smooth
+    // scrolling lands at the document's bottom, where an observer can miss a
+    // short footer entirely.
+    const scheduleUpdate = () => {
+      window.requestAnimationFrame(updateNextTarget);
+    };
 
-    return () => observer.disconnect();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    window.addEventListener("hashchange", scheduleUpdate);
+    updateNextTarget();
+
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      window.removeEventListener("hashchange", scheduleUpdate);
+    };
   }, [activeProjectSlug]);
 
   useEffect(() => {
