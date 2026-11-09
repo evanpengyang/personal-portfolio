@@ -65,29 +65,37 @@ export const projects = [
 
 export const experience = [
   {
-    period: "Sep 2025 - Present",
-    place: "UBC Product Management Club",
-    role: "Full-Stack Software Developer",
-  },
-  {
-    period: "Apr 2026 - Present",
-    place: "UBC BizTech",
-    role: "Project Director",
-  },
-  {
     period: "May 2026 - Aug 2026",
     place: "ND Research",
     role: "Technical Product Manager Intern",
   },
   {
-    period: "Mar 2026 - May 2026",
+    period: "Feb 2026 - May 2026",
     place: "Tracer Progress",
     role: "Software Engineer Intern",
+  },
+];
+
+export const leadershipExperience = [
+  {
+    period: "Sep 2025 - Present",
+    place: "UBC Product Management Club",
+    role: "Software Developer",
+  },
+  {
+    period: "Apr 2026 - Present",
+    place: "UBC BizTech",
+    role: "Event Director",
+  },
+  {
+    period: "Sep 2026 - Present",
+    place: "The University of British Columbia",
+    role: "Residence Advisor",
   },
   {
     period: "Sep 2025 - Apr 2026",
     place: "BUCS Community Team",
-    role: "Full-Stack Software Developer",
+    role: "Software Developer",
   },
   {
     period: "Aug 2024 - Jun 2025",
@@ -134,49 +142,56 @@ export const heroPhotos = [
   },
 ];
 
+// Add a short caption between the quotation marks on any photo below.
 export const photoSections = [
   {
-    section: "With friends",
     photos: [
-      {
-        id: "award-team",
-        src: "/photos/3501846C-3803-4890-9C37-C26A14882D4C.jpeg",
-        alt: "Evan and teammates at an award ceremony",
-      },
-      {
-        id: "restaurant-friends",
-        src: "/photos/3578D5B1-F3EB-4168-914F-0C0A5D9F1367.jpeg",
-        alt: "Evan with friends at a restaurant",
-      },
-      {
-        id: "pizza-night",
-        src: "/photos/4EB0AF6B-1C1D-4748-8B27-D142EB31DC30_1_102_o.jpeg",
-        alt: "Evan and friends sharing pizza",
-        layout: "journal-photo--portrait",
-      },
       {
         id: "cabin-friends",
         src: "/photos/group-friends-cabin.jpg",
         alt: "Evan and friends sitting outside a cabin",
+        caption: "Graduation Retreat",
         layout: "journal-photo--portrait",
-      },
-      {
-        id: "large-group",
-        src: "/photos/A66A901F-492D-4C89-A117-61F606BCAF6B.JPG",
-        alt: "A large group of friends posing outside",
-        layout: "journal-photo--group-shot",
       },
       {
         id: "team-event",
         src: "/photos/image.png",
         alt: "A group at an event wearing matching sweatshirts",
+        caption: "BizTech Product+ Event",
         layout: "journal-photo--featured",
+      },
+      {
+        id: "large-group",
+        src: "/photos/A66A901F-492D-4C89-A117-61F606BCAF6B.JPG",
+        alt: "A large group of friends posing outside",
+        caption: "Product Management Club Retreat",
+        layout: "journal-photo--pmc",
       },
       {
         id: "night-out",
         src: "/photos/image%20copy.png",
         alt: "Evan and friends on a night out",
+        caption: "BUCS Community Team",
         layout: "journal-photo--night-out",
+      },
+      {
+        id: "award-team",
+        src: "/photos/3501846C-3803-4890-9C37-C26A14882D4C.jpeg",
+        alt: "Evan and teammates at an award ceremony",
+        caption: "1st Place at UBC Ace the Case",
+      },
+      {
+        id: "restaurant-friends",
+        src: "/photos/3578D5B1-F3EB-4168-914F-0C0A5D9F1367.jpeg",
+        alt: "Evan with friends at a restaurant",
+        caption: "Japan Trip",
+      },
+      {
+        id: "pizza-night",
+        src: "/photos/4EB0AF6B-1C1D-4748-8B27-D142EB31DC30_1_102_o.jpeg",
+        alt: "Evan and friends sharing pizza",
+        caption: "c̓əsnaʔəm House Residence Advisors",
+        layout: "journal-photo--residence",
       },
     ],
   },
