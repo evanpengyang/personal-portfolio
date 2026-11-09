@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { experience, heroPhotos, photoSections, profile, projects } from "./data";
+import { experience, heroPhotos, leadershipExperience, photoSections, profile, projects } from "./data";
 import "./styles.css";
 
 const Arrow = () => <span className="arrow" aria-hidden="true">↗</span>;
@@ -35,24 +35,13 @@ function InstagramIcon() {
 
 function HeroPhotoStack({ photos }) {
   const [photoOrder, setPhotoOrder] = useState(() => photos.map((_, index) => index));
-  const [isChanging, setIsChanging] = useState(false);
-  const rotationTimer = useRef(null);
-
-  useEffect(() => () => {
-    if (rotationTimer.current) window.clearTimeout(rotationTimer.current);
-  }, []);
 
   const showNext = () => {
-    if (isChanging) return;
-    setIsChanging(true);
     setPhotoOrder((order) => [...order.slice(1), order[0]]);
-    rotationTimer.current = window.setTimeout(() => {
-      setIsChanging(false);
-    }, 640);
   };
 
   return (
-    <div className={`hero-photo-stack ${isChanging ? "is-changing" : ""}`} aria-label="Photo gallery">
+    <div className="hero-photo-stack" aria-label="Photo gallery">
       {photoOrder.map((photoIndex, position) => {
         const photo = photos[photoIndex];
         const isFront = position === 0;
@@ -62,7 +51,7 @@ function HeroPhotoStack({ photos }) {
             type="button"
             key={photo.id ?? photo.src}
             onClick={showNext}
-            disabled={!isFront || isChanging}
+            disabled={!isFront}
             tabIndex={isFront ? 0 : -1}
             aria-label={isFront ? "Show next photo" : undefined}
             aria-hidden={!isFront}
@@ -208,12 +197,19 @@ function NextSectionButton({ target }) {
   );
 }
 
+function projectSlugFromHash() {
+  const prefix = "#project/";
+  return window.location.hash.startsWith(prefix) ? window.location.hash.slice(prefix.length) : "";
+}
+
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeProjectSlug, setActiveProjectSlug] = useState(() => window.location.hash.replace("#project/", ""));
+  const [activeProjectSlug, setActiveProjectSlug] = useState(projectSlugFromHash);
   const [nextTarget, setNextTarget] = useState(sectionTargets[0]);
 
   useEffect(() => {
+    if (activeProjectSlug) return undefined;
+
     const activeSections = new Set();
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -232,10 +228,10 @@ function App() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [activeProjectSlug]);
 
   useEffect(() => {
-    const syncProjectRoute = () => setActiveProjectSlug(window.location.hash.replace("#project/", ""));
+    const syncProjectRoute = () => setActiveProjectSlug(projectSlugFromHash());
     window.addEventListener("popstate", syncProjectRoute);
     window.addEventListener("hashchange", syncProjectRoute);
     return () => {
@@ -245,6 +241,8 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (activeProjectSlug) return undefined;
+
     const sections = document.querySelectorAll("[data-reveal]");
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((entry) => {
@@ -258,7 +256,7 @@ function App() {
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, []);
+  }, [activeProjectSlug]);
 
   const closeMenu = () => setMenuOpen(false);
   const openProject = (slug) => {
@@ -337,32 +335,51 @@ function App() {
           {experience.map((item) => (
             <div className="experience-row" key={item.period + item.place}>
               <span className="period">{item.period}</span>
-              <strong>{item.place}</strong>
-              <span>{item.role}</span>
+              <strong>{item.role}</strong>
+              <span>{item.place}</span>
             </div>
           ))}
+        </div>
+        <div className="leadership-experience">
+          <div className="section-heading">
+            <p className="section-index">Leadership Experience</p>
+          </div>
+          <div className="experience-list">
+            {leadershipExperience.map((item) => (
+              <div className="experience-row" key={item.period + item.place}>
+                <span className="period">{item.period}</span>
+                <strong>{item.role}</strong>
+                <span>{item.place}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       <section id="about" className="about section-shell scroll-reveal" data-reveal>
         <div className="about-card">
-          <div className="about-intro about-intro-single">
+          <div className="about-intro">
             <div className="about-column">
               <h3>Outside of Work</h3>
               <p>I love travelling, exploring different cultures, food, and experiences, anything which will give me future dad lore. In my free time you can catch me bouldering, swimming, working out and enjoying time with friends :)</p>
             </div>
-          </div>
-          <div className="about-philosophy about-column">
-            <h3>My Philosophy</h3>
-            <p>I&apos;ve always loved teaching, and in the far future aspire to be a professor. From teaching cadets leadership skills, to teaching young kids how to swim, to leading a chess program for elementary kids across BC, I&apos;ve always enjoyed giving back to my communities. That&apos;s why a fundamental part of my life is about learning and growth!</p>
+            <div className="about-column about-philosophy">
+              <h3>My Philosophy</h3>
+              <p>I've always loved teaching, and in the far future aspire to be a professor. I've taught cadets leadership skills, young kids how to swim, and led a free chess tutoring program for elementary kids across BC. Teaching is my passion and the reason why I work hard to learn and grow.</p>
+            </div>
           </div>
           <div className="photo-journal">
-            <div className="journal-heading"><h3>A few moments</h3><p>Photos from the places, people, and little things I want to remember.</p></div>
+            <div className="journal-heading"><h3>A few moments</h3><p>Friends and Communities</p></div>
             {photoSections.length > 0 ? photoSections.map((section) => (
               <div className="photo-section" key={section.section}>
                 <h4 className="photo-section-title">{section.section}</h4>
                 <div className="photo-grid">
-                  {section.photos.map((photo) => <figure className={`journal-photo ${photo.layout ?? ""}`} key={photo.id ?? photo.src}><img src={photo.src} alt={photo.alt} /></figure>)}
+                  {section.photos.map((photo) => (
+                    <figure className={`journal-photo ${photo.layout ?? ""} ${photo.caption ? "has-caption" : ""}`} key={photo.id ?? photo.src}>
+                      <img src={photo.src} alt={photo.alt} />
+                      {photo.caption && <figcaption className="photo-caption">{photo.caption}</figcaption>}
+                    </figure>
+                  ))}
                 </div>
               </div>
             )) : (
