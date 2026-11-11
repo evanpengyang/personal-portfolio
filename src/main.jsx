@@ -56,7 +56,7 @@ function HeroPhotoStack({ photos }) {
             aria-label={isFront ? "Show next photo" : undefined}
             aria-hidden={!isFront}
           >
-            <img src={photo.src} alt={isFront ? photo.alt : ""} />
+            <img src={photo.src} alt={isFront ? photo.alt : ""} decoding="async" />
           </button>
         );
       })}
@@ -76,7 +76,7 @@ function ProjectArtwork({ type }) {
   if (type === "campus-eats") {
     return (
       <div className="art art-campus-eats" aria-hidden="true">
-        <img src="/photos/campus-eats-logo.jpg" alt="" />
+        <img src="/photos/campus-eats-logo.jpg" alt="" loading="lazy" decoding="async" />
       </div>
     );
   }
@@ -84,7 +84,7 @@ function ProjectArtwork({ type }) {
   if (type === "chud-life") {
     return (
       <div className="art art-chud-life" aria-hidden="true">
-        <img src="/photos/chud-life.png" alt="" />
+        <img src="/photos/chud-life.png" alt="" loading="lazy" decoding="async" />
       </div>
     );
   }
@@ -92,7 +92,7 @@ function ProjectArtwork({ type }) {
   if (type === "internship-tracker") {
     return (
       <div className="art art-internship-tracker" aria-hidden="true">
-        <img src="/photos/internship-tracker.png" alt="" />
+        <img src="/photos/internship-tracker.png" alt="" loading="lazy" decoding="async" />
       </div>
     );
   }
@@ -100,7 +100,7 @@ function ProjectArtwork({ type }) {
   if (type === "psyflow") {
     return (
       <div className="art art-psyflow" aria-hidden="true">
-        <img src="/photos/Screenshot%202026-11-08%20at%2012.19.24%E2%80%AFAM.png" alt="" />
+        <img src="/photos/Screenshot%202026-11-08%20at%2012.19.24%E2%80%AFAM.png" alt="" loading="lazy" decoding="async" />
       </div>
     );
   }
@@ -212,16 +212,21 @@ function App() {
   useEffect(() => {
     if (activeProjectSlug) return undefined;
 
+    const forwardTargets = sectionTargets.slice(0, -1);
+    const startTarget = sectionTargets[sectionTargets.length - 1];
+    const sectionElements = forwardTargets.map((target) => ({
+      target,
+      element: document.getElementById(target.id),
+    }));
+    let frameId = null;
+
     const updateNextTarget = () => {
-      const forwardTargets = sectionTargets.slice(0, -1);
-      const startTarget = sectionTargets[sectionTargets.length - 1];
       const scrollRemaining = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
       const nextTarget = scrollRemaining <= 8
         ? startTarget
-        : forwardTargets.find((target) => {
-          const section = document.getElementById(target.id);
-          return section && section.getBoundingClientRect().top > window.innerHeight * 0.35;
-        }) ?? startTarget;
+        : sectionElements.find(({ element }) => (
+          element && element.getBoundingClientRect().top > window.innerHeight * 0.35
+        ))?.target ?? startTarget;
 
       setNextTarget((current) => (current === nextTarget ? current : nextTarget));
     };
@@ -231,7 +236,11 @@ function App() {
     // scrolling lands at the document's bottom, where an observer can miss a
     // short footer entirely.
     const scheduleUpdate = () => {
-      window.requestAnimationFrame(updateNextTarget);
+      if (frameId !== null) return;
+      frameId = window.requestAnimationFrame(() => {
+        frameId = null;
+        updateNextTarget();
+      });
     };
 
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
@@ -243,6 +252,7 @@ function App() {
       window.removeEventListener("scroll", scheduleUpdate);
       window.removeEventListener("resize", scheduleUpdate);
       window.removeEventListener("hashchange", scheduleUpdate);
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
     };
   }, [activeProjectSlug]);
 
@@ -392,7 +402,7 @@ function App() {
                 <div className="photo-grid">
                   {section.photos.map((photo) => (
                     <figure className={`journal-photo ${photo.layout ?? ""} ${photo.caption ? "has-caption" : ""}`} key={photo.id ?? photo.src}>
-                      <img src={photo.src} alt={photo.alt} />
+                      <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
                       {photo.caption && <figcaption className="photo-caption">{photo.caption}</figcaption>}
                     </figure>
                   ))}

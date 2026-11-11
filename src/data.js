@@ -150,7 +150,7 @@ export const photoSections = [
       },
       {
         id: "team-event",
-        src: "/photos/image.png",
+        src: "/photos/biztech-product-event.jpg",
         alt: "A group at an event wearing matching sweatshirts",
         caption: "BizTech Product+ Event",
         layout: "journal-photo--featured",

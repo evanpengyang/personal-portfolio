@@ -1723,6 +1723,27 @@ h1 {
     bottom: 17px;
   }
 
+  /* Let a caption add height below its photo instead of taking space from the
+     fixed gallery row. This keeps the label visibly separate from the image
+     on narrow screens. */
+  .photo-grid {
+    grid-auto-rows: auto;
+    align-items: start;
+  }
+
+  .journal-photo.has-caption {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    gap: 8px;
+  }
+
+  .journal-photo.has-caption img {
+    flex: 0 0 auto;
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
   .journal-photo--featured {
     grid-column: span 1;
     grid-row: span 1;
